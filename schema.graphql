@@ -133,7 +133,7 @@ type Query {
   ): search_for_accessible_users_response
 
   """Manually added"""
-  getUser(user_ID: UUID!): User
+  getUser(userId: UUID!): User
 }
 
 union search_response = UserProjectRoleEventList | Error

@@ -14,10 +14,10 @@ interface ContextValue {
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
-const resolvers: Resolvers = {
+const resolvers: Resolvers<ContextValue> = {
     Query: {
-        getUser: async (_, {user_id}, {dataSources}): Promise<User> => {
-            return await dataSources.ariza.getUser(user_id);
+        getUser: async (_, {userId}, {dataSources}): Promise<User> => {
+            return await dataSources.ariza.getUser(userId);
         }
     }
 };

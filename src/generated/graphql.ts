@@ -227,12 +227,19 @@ export type NewUserProjectRoleEvent_Input = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Manually added */
+  getUser?: Maybe<User>;
   /** Retrieve a user_project_role_event by id */
   retrieve?: Maybe<Retrieve_Response>;
   /** Search the collection of all user_project_role_events */
   search?: Maybe<Search_Response>;
   /** Search for accessible_users relative to a user */
   search_for_accessible_users?: Maybe<Search_For_Accessible_Users_Response>;
+};
+
+
+export type QueryGetUserArgs = {
+  userId: Scalars['UUID']['input'];
 };
 
 
@@ -1196,6 +1203,7 @@ export interface ObjMapScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 }
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetUserArgs, 'userId'>>;
   retrieve?: Resolver<Maybe<ResolversTypes['retrieve_response']>, ParentType, ContextType, RequireFields<QueryRetrieveArgs, 'account_manager_id' | 'client_relationship_lead_id' | 'pending_provider_invite_id' | 'person_id' | 'terms_of_service_acceptance_id' | 'user_event_id' | 'user_favorite_project_id' | 'user_id' | 'user_info_event_id' | 'user_info_id' | 'user_preferences_id' | 'user_project_role_event_id' | 'user_project_role_id'>>;
   search?: Resolver<Maybe<ResolversTypes['search_response']>, ParentType, ContextType, Partial<QuerySearchArgs>>;
   search_for_accessible_users?: Resolver<Maybe<ResolversTypes['search_for_accessible_users_response']>, ParentType, ContextType, RequireFields<QuerySearch_For_Accessible_UsersArgs, 'user_id'>>;
