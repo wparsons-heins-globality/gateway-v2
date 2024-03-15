@@ -1,0 +1,856 @@
+directive @oneOf on OBJECT | INTERFACE | INPUT_OBJECT
+
+directive @statusCodeTypeName(subgraph: String, typeName: String, statusCode: ID) repeatable on UNION
+
+directive @enum(subgraph: String, value: String) on ENUM_VALUE
+
+directive @resolveRoot(subgraph: String) on FIELD_DEFINITION
+
+directive @httpOperation(subgraph: String, path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap, jsonApiFields: Boolean) on FIELD_DEFINITION
+
+directive @transport(subgraph: String, kind: String, location: String, headers: ObjMap, queryStringOptions: ObjMap, queryParams: ObjMap) on OBJECT
+
+type Query {
+  """Search the collection of all user_project_role_events"""
+  search(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+
+    """The pagination limit."""
+    limit: Int
+
+    """The pagination starting offset."""
+    offset: Int
+    client_id: UUID
+    created_by: UUID
+    ignore_resolution: Boolean
+    resolution: queryInput_search_resolution
+    service_provider_id: UUID
+    user_id: UUID
+    email: EmailAddress
+    project_id: UUID
+    service_provider_ids: [UUID]
+    company_id: UUID
+    company_ids: [UUID]
+    first_name: String
+    ids: [UUID]
+    last_name: String
+    q: String
+    version: Int
+    activation_progress: queryInput_search_activation_progress
+    company_role: queryInput_search_company_role
+    company_roles: [queryInput_search_company_roles_items]
+    email_string: String
+    emails: [EmailAddress]
+    exclude_company_roles: [queryInput_search_exclude_company_roles_items]
+    has_client_company_relation: Boolean
+    has_provider_company_relation: Boolean
+    include_deactivated: Boolean
+    max_updated_at: DateTime
+    min_updated_at: DateTime
+    purpose: queryInput_search_purpose
+    salesforce_id: String
+    salesforce_id_is_set: Boolean
+    user_type: queryInput_search_user_type
+    event_type: queryInput_search_event_type
+    event_types: [queryInput_search_event_types_items]
+    inviter_id: UUID
+    latest: Boolean
+    max_clock: Int
+    min_clock: Int
+    min_created_timestamp: Float
+    source_type: queryInput_search_source_type
+    source_types: [queryInput_search_source_types_items]
+    user_ids: [UUID]
+    user_info_id: UUID
+    clock: Int
+    user_set_localisation: Boolean
+    distinct_user_id: Boolean
+    exclude_unset_roles: Boolean
+    project_ids: [UUID]
+    role: queryInput_search_role
+    roles: [queryInput_search_roles_items]
+    hidden: Boolean
+    most_recent: Boolean
+    user_project_role_id: UUID
+  ): search_response
+
+  """Retrieve a user_project_role_event by id"""
+  retrieve(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    account_manager_id: UUID!
+    client_relationship_lead_id: UUID!
+    pending_provider_invite_id: UUID!
+    person_id: UUID!
+    terms_of_service_acceptance_id: UUID!
+    user_id: UUID!
+    user_event_id: UUID!
+    user_favorite_project_id: UUID!
+    user_info_id: UUID!
+    user_info_event_id: UUID!
+    user_preferences_id: UUID!
+    min_clock: Int
+    user_project_role_id: UUID!
+    user_project_role_event_id: UUID!
+  ): retrieve_response
+
+  """Search for accessible_users relative to a user"""
+  search_for_accessible_users(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_id: UUID!
+    accessible_user_id: UUID
+    accessible_user_ids: [UUID]
+    activation_progress: queryInput_search_for_accessible_users_activation_progress
+    company_id: UUID
+    company_ids: [UUID]
+    company_role: queryInput_search_for_accessible_users_company_role
+    company_roles: [queryInput_search_for_accessible_users_company_roles_items]
+    email: EmailAddress
+    email_string: String
+    emails: [EmailAddress]
+    exclude_company_roles: [queryInput_search_for_accessible_users_exclude_company_roles_items]
+    first_name: String
+    has_client_company_relation: Boolean
+    has_provider_company_relation: Boolean
+    ids: [UUID]
+    include_deactivated: Boolean
+    last_name: String
+
+    """The pagination limit."""
+    limit: Int
+    max_updated_at: DateTime
+    min_updated_at: DateTime
+
+    """The pagination starting offset."""
+    offset: Int
+    purpose: queryInput_search_for_accessible_users_purpose
+    q: String
+    salesforce_id: String
+    salesforce_id_is_set: Boolean
+    user_type: queryInput_search_for_accessible_users_user_type
+  ): search_for_accessible_users_response
+
+  """Manually added"""
+  getUser(user_ID: UUID!): User
+}
+
+union search_response = UserProjectRoleEventList | Error
+
+type UserProjectRoleEventList {
+  _links: JSON
+
+  """The number of items in the page."""
+  count: Int!
+
+  """The page of items."""
+  items: [UserProjectRoleEvent]!
+
+  """The pagination limit."""
+  limit: Int!
+
+  """The pagination starting offset."""
+  offset: Int!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type UserProjectRoleEvent {
+  _links: JSON
+  _state: [String]
+  clock: Int
+  companyId: UUID
+  createdBy: UUID
+  createdTimestamp: Float!
+  eventType: String!
+  handlePermissions: Boolean
+  hidden: Boolean
+  id: UUID!
+  parentId: UUID
+  projectId: UUID
+  purpose: String
+  resolution: String
+  role: String
+  userId: UUID
+  userProjectRoleId: UUID!
+}
+
+"""
+A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
+"""
+scalar UUID
+
+type Error {
+  code: Int!
+  context: ErrorContext
+  message: String!
+  retryable: Boolean!
+}
+
+type ErrorContext {
+  errors: [SubError]!
+}
+
+type SubError {
+  message: String!
+}
+
+enum queryInput_search_resolution {
+  ACTIVE
+  ARCHIVED
+  ABANDONED
+  CLOSED
+  REDACTED
+  STALE
+}
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
+
+enum queryInput_search_activation_progress {
+  UserCreated
+  UserCompanyRoleSet
+  UserInvited
+  UserActivated
+  UserDeactivated
+  UserPasswordSet
+  EmailChanged
+  ThumbnailUrlChanged
+  UserDescriptionSet
+  NameChanged
+  UserGoLive
+  UserResetSSO
+  UserPurposeSet
+  UserSalesforceIDSet
+  UserCategorySet
+  UserCategoryUnset
+  UserTermsSignedSet
+  UserTermsSignedUnset
+}
+
+enum queryInput_search_company_role {
+  SuperAdmin
+  SystemAdmin
+  ProcurementUser
+  BusinessDirector
+  BusinessUser
+  TeamMember
+  CategoryManager
+  Developer
+  admin
+  manager
+  account_manager
+  ProviderSmartProfileEditor
+  ProviderSystemAdmin
+  ProviderTeamMember
+}
+
+enum queryInput_search_company_roles_items {
+  SuperAdmin
+  SystemAdmin
+  ProcurementUser
+  BusinessDirector
+  BusinessUser
+  TeamMember
+  CategoryManager
+  Developer
+  admin
+  manager
+  account_manager
+  ProviderSmartProfileEditor
+  ProviderSystemAdmin
+  ProviderTeamMember
+}
+
+enum queryInput_search_exclude_company_roles_items {
+  SuperAdmin
+  SystemAdmin
+  ProcurementUser
+  BusinessDirector
+  BusinessUser
+  TeamMember
+  CategoryManager
+  Developer
+  admin
+  manager
+  account_manager
+  ProviderSmartProfileEditor
+  ProviderSystemAdmin
+  ProviderTeamMember
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum queryInput_search_purpose {
+  CONTENT
+  NORMAL
+  TEST
+  TUTORIAL
+  REHEARSAL
+}
+
+enum queryInput_search_user_type {
+  account_manager
+  backend_admin
+  qe_api_user
+  backend_file_resolver
+  globality_observer
+  user
+}
+
+enum queryInput_search_event_type {
+  UserAddedToProject
+  SetUserProjectRole
+  UnsetUserProjectRole
+  SetUserProjectRolePurpose
+  SetUserProjectRoleResolution
+}
+
+enum queryInput_search_event_types_items {
+  UserAddedToProject
+  SetUserProjectRole
+  UnsetUserProjectRole
+  SetUserProjectRolePurpose
+  SetUserProjectRoleResolution
+}
+
+enum queryInput_search_source_type {
+  Auth0
+  Salesforce
+  DeveloperAPI
+  CSTool
+  AdminTool
+  QnA
+  Globality
+  Company
+  Project
+  Workspace
+  Unknown
+}
+
+enum queryInput_search_source_types_items {
+  Auth0
+  Salesforce
+  DeveloperAPI
+  CSTool
+  AdminTool
+  QnA
+  Globality
+  Company
+  Project
+  Workspace
+  Unknown
+}
+
+enum queryInput_search_role {
+  ProjectOwner
+  ProjectAdmin
+  ProjectProcurement
+  ProjectEditor
+  ProjectEvaluator
+  ProjectViewer
+  ProjectHomeUser
+  ProjectManager
+  ProgramClientManager
+  ProviderProjectManager
+  ProgramProviderManager
+  OnboardingEditor
+  OnboardingTeamMember
+}
+
+enum queryInput_search_roles_items {
+  ProjectOwner
+  ProjectAdmin
+  ProjectProcurement
+  ProjectEditor
+  ProjectEvaluator
+  ProjectViewer
+  ProjectHomeUser
+  ProjectManager
+  ProgramClientManager
+  ProviderProjectManager
+  ProgramProviderManager
+  OnboardingEditor
+  OnboardingTeamMember
+}
+
+union retrieve_response = UserProjectRoleEvent | Error
+
+union search_for_accessible_users_response = AccessibleUserList | Error
+
+type AccessibleUserList {
+  _links: JSON
+
+  """The number of items in the page."""
+  count: Int!
+
+  """The page of items."""
+  items: [User]!
+
+  """The pagination limit."""
+  limit: Int!
+
+  """The pagination starting offset."""
+  offset: Int!
+}
+
+type User {
+  _links: JSON
+  activationProgress: String
+  clientId: UUID
+  companyId: UUID!
+  companyRole: String
+  createdAt: DateTime!
+  createdBy: UUID
+  deactivated: Boolean
+  description: String
+  email: EmailAddress!
+  firstName: String!
+  id: UUID
+  invitationCompanyRole: String
+  invitationLink: String
+  invitationLinkType: String
+  invitationMessage: String
+  invitationSource: String
+  invitedAt: DateTime
+  isActive: Boolean
+  isCommonEmailDomain: Boolean
+  isDeactivated: Boolean
+  lastName: String!
+  purpose: String!
+  reinvited: Boolean
+  salesforceId: String
+  termsSignedAt: DateTime
+  termsVersionSigned: String
+  thumbnailUrl: String
+  title: String
+  updatedAt: DateTime
+  url: URL
+  userType: String!
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+enum queryInput_search_for_accessible_users_activation_progress {
+  UserCreated
+  UserCompanyRoleSet
+  UserInvited
+  UserActivated
+  UserDeactivated
+  UserPasswordSet
+  EmailChanged
+  ThumbnailUrlChanged
+  UserDescriptionSet
+  NameChanged
+  UserGoLive
+  UserResetSSO
+  UserPurposeSet
+  UserSalesforceIDSet
+  UserCategorySet
+  UserCategoryUnset
+  UserTermsSignedSet
+  UserTermsSignedUnset
+}
+
+enum queryInput_search_for_accessible_users_company_role {
+  SuperAdmin
+  SystemAdmin
+  ProcurementUser
+  BusinessDirector
+  BusinessUser
+  TeamMember
+  CategoryManager
+  Developer
+  admin
+  manager
+  account_manager
+  ProviderSmartProfileEditor
+  ProviderSystemAdmin
+  ProviderTeamMember
+}
+
+enum queryInput_search_for_accessible_users_company_roles_items {
+  SuperAdmin
+  SystemAdmin
+  ProcurementUser
+  BusinessDirector
+  BusinessUser
+  TeamMember
+  CategoryManager
+  Developer
+  admin
+  manager
+  account_manager
+  ProviderSmartProfileEditor
+  ProviderSystemAdmin
+  ProviderTeamMember
+}
+
+enum queryInput_search_for_accessible_users_exclude_company_roles_items {
+  SuperAdmin
+  SystemAdmin
+  ProcurementUser
+  BusinessDirector
+  BusinessUser
+  TeamMember
+  CategoryManager
+  Developer
+  admin
+  manager
+  account_manager
+  ProviderSmartProfileEditor
+  ProviderSystemAdmin
+  ProviderTeamMember
+}
+
+enum queryInput_search_for_accessible_users_purpose {
+  CONTENT
+  NORMAL
+  TEST
+  TUTORIAL
+  REHEARSAL
+}
+
+enum queryInput_search_for_accessible_users_user_type {
+  account_manager
+  backend_admin
+  qe_api_user
+  backend_file_resolver
+  globality_observer
+  user
+}
+
+type Mutation {
+  """Create a new user_project_role_event_batch"""
+  create(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    input: NewUserProjectRoleEventBatch_Input
+  ): create_response
+
+  """Delete a user_preferences by id"""
+  delete(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    client_relationship_lead_id: UUID!
+    pending_provider_invite_id: UUID!
+    person_id: UUID!
+    terms_of_service_acceptance_id: UUID!
+    user_favorite_project_id: UUID!
+    user_preferences_id: UUID!
+  ): delete_response
+
+  """Update some or all of a user_preferences by id"""
+  update(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    client_relationship_lead_id: UUID!
+    input: UpdateUserPreferences_Input
+    person_id: UUID!
+    user_preferences_id: UUID!
+  ): update_response
+
+  """Create or update a user_preferences by id"""
+  replace(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    person_id: UUID!
+    input: ReplaceUserPreferences_Input
+    user_favorite_project_id: UUID!
+    user_preferences_id: UUID!
+  ): replace_response
+
+  """Replace a company_relations relative to a user"""
+  update_for_company_relations(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_id: UUID!
+    input: UpdateCompanyRelation_Input
+  ): update_for_company_relations_response
+
+  """Replace a deactivates relative to a user"""
+  update_for_deactivates(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_id: UUID!
+    input: DeactivateUser_Input
+  ): update_for_deactivates_response
+
+  """Replace a emails relative to a user"""
+  update_for_emails(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_id: UUID!
+    input: UpdateUserEmail_Input
+  ): update_for_emails_response
+
+  """Replace a names relative to a user"""
+  update_for_names(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_id: UUID!
+    input: UpdateUserName_Input
+  ): update_for_names_response
+
+  """Replace a reset_ssos relative to a user"""
+  update_for_reset_ssos(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_id: UUID!
+    input: UpdateUserField_Input
+  ): update_for_reset_ssos_response
+
+  """Replace a thumbnail_urls relative to a user"""
+  update_for_thumbnail_urls(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_id: UUID!
+    input: UpdateUserThumbnailUrl_Input
+  ): update_for_thumbnail_urls_response
+
+  """Replace a flags relative to a user_preferences"""
+  update_for_flags(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_preferences_id: UUID!
+    input: Flags_Input
+  ): update_for_flags_response
+
+  """Create a new republishes relative to a user_project_role_event"""
+  create_for_republishes(
+    """Remove fields with null values from the response."""
+    X_Response_Skip_Null: String
+    user_project_role_event_id: UUID!
+
+    """
+    Base schema class with which to define custom schemas. Example usage: .. code-block:: python import datetime as dt from dataclasses import dataclass from marshmallow import Schema, fields @dataclass class Album: title: str release_date: dt.date class AlbumSchema(Schema): title = fields.Str() release_date = fields.Date() album = Album("Beggars Banquet", dt.date(1968, 12, 6)) schema = AlbumSchema() data = schema.dump(album) data # {'release_date': '1968-12-06', 'title': 'Beggars Banquet'} :param only: Whitelist of the declared fields to select when instantiating the Schema. If None, all fields are used. Nested fields can be represented with dot delimiters. :param exclude: Blacklist of the declared fields to exclude when instantiating the Schema. If a field appears in both `only` and `exclude`, it is not used. Nested fields can be represented with dot delimiters. :param many: Should be set to `True` if ``obj`` is a collection so that the object will be serialized to a list. :param context: Optional context passed to :class:`fields.Method` and :class:`fields.Function` fields. :param load_only: Fields to skip during serialization (write-only fields) :param dump_only: Fields to skip during deserialization (read-only fields) :param partial: Whether to ignore missing fields and not require any fields declared. Propagates down to ``Nested`` fields as well. If its value is an iterable, only missing fields listed in that iterable will be ignored. Use dot delimiters to specify nested fields. :param unknown: Whether to exclude, include, or raise an error for unknown fields in the data. Use `EXCLUDE`, `INCLUDE` or `RAISE`. .. versionchanged:: 3.0.0 `prefix` parameter removed. .. versionchanged:: 2.0.0 `__validators__`, `__preprocessors__`, and `__data_handlers__` are removed in favor of `marshmallow.decorators.validates_schema`, `marshmallow.decorators.pre_load` and `marshmallow.decorators.post_dump`. `__accessor__` and `__error_handler__` are deprecated. Implement the `handle_error` and `get_attribute` methods instead.
+    """
+    input: JSON
+  ): create_for_republishes_response
+}
+
+union create_response = UserProjectRoleEventBatch | Error
+
+type UserProjectRoleEventBatch {
+  items: [UserProjectRoleEvent]!
+}
+
+input NewUserProjectRoleEventBatch_Input {
+  items: [NewUserProjectRoleEvent_Input]!
+}
+
+"""Generalized user project role set event schema."""
+input NewUserProjectRoleEvent_Input {
+  companyId: UUID
+  createdBy: UUID!
+  eventType: mutationInput_create_input_items_items_eventType!
+  hidden: Boolean
+  projectId: UUID
+  purpose: mutationInput_create_input_items_items_purpose
+  resolution: mutationInput_create_input_items_items_resolution
+  role: mutationInput_create_input_items_items_role
+  userId: UUID
+  userProjectRoleId: UUID
+}
+
+enum mutationInput_create_input_items_items_eventType {
+  UserAddedToProject
+  SetUserProjectRole
+  UnsetUserProjectRole
+  SetUserProjectRolePurpose
+  SetUserProjectRoleResolution
+}
+
+enum mutationInput_create_input_items_items_purpose {
+  CONTENT
+  NORMAL
+  TEST
+  TUTORIAL
+  REHEARSAL
+}
+
+enum mutationInput_create_input_items_items_resolution {
+  ACTIVE
+  ARCHIVED
+  ABANDONED
+  CLOSED
+  REDACTED
+  STALE
+}
+
+enum mutationInput_create_input_items_items_role {
+  ProjectOwner
+  ProjectAdmin
+  ProjectProcurement
+  ProjectEditor
+  ProjectEvaluator
+  ProjectViewer
+  ProjectHomeUser
+  ProjectManager
+  ProgramClientManager
+  ProviderProjectManager
+  ProgramProviderManager
+  OnboardingEditor
+  OnboardingTeamMember
+}
+
+union delete_response = Void_container | Error
+
+type Void_container {
+  Void: Void
+}
+
+"""Represents empty values"""
+scalar Void
+
+union update_response = UserPreferences | Error
+
+type UserPreferences {
+  _links: JSON
+  clock: Int
+  created_at: DateTime
+  emailDigestsEnabled: Boolean
+  emailEnabled: Boolean
+  flags: [String]
+  id: UUID
+  locale: String
+  timezone: String
+  updated_at: DateTime
+  userId: UUID!
+  userSetLocalisation: Boolean
+}
+
+input UpdateUserPreferences_Input {
+  clock: Int
+  emailDigestsEnabled: Boolean
+  emailEnabled: Boolean
+  flags: [mutationInput_update_input_flags_items]
+  locale: String
+  timezone: String
+}
+
+enum mutationInput_update_input_flags_items {
+  DISABLE_NEW_PROJECT_BRIEF_OVERVIEW_MODAL
+  DISABLE_SHOW_BRIEF_TIP
+}
+
+union replace_response = UserPreferences | Error
+
+input ReplaceUserPreferences_Input {
+  clock: Int
+  emailDigestsEnabled: Boolean
+  emailEnabled: Boolean
+  flags: [mutationInput_replace_input_flags_items]
+  locale: String
+  timezone: String
+  userId: UUID!
+  userSetLocalisation: Boolean
+}
+
+enum mutationInput_replace_input_flags_items {
+  DISABLE_NEW_PROJECT_BRIEF_OVERVIEW_MODAL
+  DISABLE_SHOW_BRIEF_TIP
+}
+
+union update_for_company_relations_response = UpdateCompanyRelationResponse | Error
+
+type UpdateCompanyRelationResponse {
+  updated: Int!
+}
+
+input UpdateCompanyRelation_Input {
+  hasClientCompanyRelation: Boolean!
+  hasProviderCompanyRelation: Boolean!
+}
+
+union update_for_deactivates_response = User | Error
+
+input DeactivateUser_Input {
+  deactivatedReason: String!
+  source: String = "Globality"
+  updatedBy: UUID!
+  userId: UUID
+}
+
+union update_for_emails_response = User | Error
+
+input UpdateUserEmail_Input {
+  email: EmailAddress!
+  source: String = "Globality"
+  updatedBy: UUID!
+  userId: UUID
+}
+
+union update_for_names_response = User | Error
+
+input UpdateUserName_Input {
+  firstName: String!
+  lastName: String
+  source: String = "Globality"
+  updatedBy: UUID!
+  userId: UUID
+}
+
+union update_for_reset_ssos_response = User | Error
+
+input UpdateUserField_Input {
+  source: String = "Globality"
+  updatedBy: UUID!
+  userId: UUID
+}
+
+union update_for_thumbnail_urls_response = User | Error
+
+input UpdateUserThumbnailUrl_Input {
+  source: String = "Globality"
+  thumbnailUrl: String
+  updatedBy: UUID!
+  userId: UUID
+}
+
+union update_for_flags_response = Flags | Error
+
+type Flags {
+  flags: [mutation_update_for_flags_oneOf_0_flags_items]
+}
+
+enum mutation_update_for_flags_oneOf_0_flags_items {
+  DISABLE_NEW_PROJECT_BRIEF_OVERVIEW_MODAL
+  DISABLE_SHOW_BRIEF_TIP
+}
+
+input Flags_Input {
+  flags: [mutation_update_for_flags_oneOf_0_flags_items]
+}
+
+union create_for_republishes_response = JSON_container | Error
+
+type JSON_container {
+  JSON: JSON
+}
+
+scalar ObjMap
+
+enum HTTPMethod {
+  GET
+  HEAD
+  POST
+  PUT
+  DELETE
+  CONNECT
+  OPTIONS
+  TRACE
+  PATCH
+}
