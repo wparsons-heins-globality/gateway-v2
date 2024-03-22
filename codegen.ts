@@ -1,16 +1,16 @@
-import type { CodegenConfig } from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
-  overwrite: true,
-  schema: './schema.graphql',
-  generates: {
-    "src/generated/graphql.ts": {
-      config: {
-        useIndexSignature: true
-      },
-      plugins: ["typescript", "typescript-resolvers"]
-    }
-  }
-};
+    overwrite: true,
+    schema: './schema.graphql',
+    generates: {
+        'src/generated/graphql.ts': {
+            config: {
+                useIndexSignature: true,
+            },
+            plugins: ['typescript', 'typescript-resolvers'],
+        },
+    },
+}
 
-export default config;
+export default config

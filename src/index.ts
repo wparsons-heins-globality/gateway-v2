@@ -1,10 +1,10 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from '@apollo/server/standalone';
-import {readFileSync} from 'node:fs';
-import { Resolvers } from "./generated/graphql";
+import { ApolloServer } from '@apollo/server'
+import { startStandaloneServer } from '@apollo/server/standalone'
+import { readFileSync } from 'node:fs'
+import { Resolvers } from './generated/graphql'
 
-import {ArizaAPI} from './api';
-import {User} from './generated/graphql';
+import { ArizaAPI } from './api'
+import { User } from './generated/graphql'
 
 interface ContextValue {
     dataSources: {
@@ -12,32 +12,31 @@ interface ContextValue {
     }
 }
 
-const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
+const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' })
 
 const resolvers: Resolvers<ContextValue> = {
     Query: {
-        getUser: async (_, {userId}, {dataSources}): Promise<User> => {
-            return await dataSources.ariza.getUser(userId);
-        }
-    }
-};
+        getUser: async (_, { userId }, { dataSources }): Promise<User> => {
+            return await dataSources.ariza.getUser(userId)
+        },
+    },
+}
 
 const server = new ApolloServer<ContextValue>({
-  typeDefs,
-  resolvers,
-});
+    typeDefs,
+    resolvers,
+})
 
 const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
+    listen: { port: 4000 },
     context: async () => {
-        const {cache} = server;
+        const { cache } = server
         return {
             dataSources: {
-                ariza: new ArizaAPI({cache}),
-            }
+                ariza: new ArizaAPI({ cache }),
+            },
         }
-    }
-});
+    },
+})
 
-console.log(`🚀  Server ready at: ${url}`);
-
+console.log(`🚀  Server ready at: ${url}`)

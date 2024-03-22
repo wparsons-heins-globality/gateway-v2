@@ -1,31 +1,32 @@
 {
-  "name": "openapi",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "dist/src/index.js",
-  "license": "MIT",
-  "scripts": {
-    "fetch": "tsx ./generate.ts",
-    "codegen": "graphql-codegen --config codegen.ts",
-    "start": "tsx ./src/index.ts"
-  },
-  "dependencies": {
-    "@apollo/datasource-rest": "^6.2.2",
-    "@apollo/server": "^4.10.1",
-    "graphql": "^16.8.1"
-  },
-  "devDependencies": {
-    "@graphql-codegen/cli": "5.0.2",
-    "@graphql-codegen/typescript": "4.0.6",
-    "@graphql-codegen/typescript-resolvers": "4.0.6",
-    "@graphql-mesh/cross-helpers": "^0.4.1",
-    "@graphql-mesh/store": "^0.97.4",
-    "@graphql-mesh/types": "^0.97.1",
-    "@graphql-mesh/utils": "^0.97.1",
-    "@graphql-tools/utils": "^10.0.0",
-    "@omnigraph/openapi": "^0.99.2",
-    "tslib": "^2.4.0",
-    "tsx": "^4.7.1",
-    "typescript": "^5.4.2"
-  }
+    "name": "openapi",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "dist/src/index.js",
+    "license": "MIT",
+    "scripts": {
+        "fetch": "tsx ./generate.ts",
+        "codegen": "graphql-codegen --config codegen.ts",
+        "start": "tsx ./src/index.ts"
+    },
+    "dependencies": {
+        "@apollo/datasource-rest": "^6.2.2",
+        "@apollo/server": "^4.10.1",
+        "graphql": "^16.8.1"
+    },
+    "devDependencies": {
+        "@graphql-codegen/cli": "5.0.2",
+        "@graphql-codegen/typescript": "4.0.6",
+        "@graphql-codegen/typescript-resolvers": "4.0.6",
+        "@graphql-mesh/cross-helpers": "^0.4.1",
+        "@graphql-mesh/store": "^0.97.4",
+        "@graphql-mesh/types": "^0.97.1",
+        "@graphql-mesh/utils": "^0.97.1",
+        "@graphql-tools/utils": "^10.0.0",
+        "@omnigraph/openapi": "^0.99.2",
+        "prettier": "^3.2.5",
+        "tslib": "^2.4.0",
+        "tsx": "^4.7.1",
+        "typescript": "^5.4.2"
+    }
 }
